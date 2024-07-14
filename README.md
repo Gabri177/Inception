@@ -63,7 +63,26 @@
 
 ## 2 Docker 引擎
 
+### 2.1 Docker 引擎架构
 
+* Docker 引擎是用来运行和管理容器的核心软件, 其现代架构由四部分主要组件构成 : ==Docker Client==, ==Dockerd==, ==Containerd==. ==Runc==
+* 2.1.1 Docker Client
+    * Docker 客户端, Docker引擎提供CLI工具, 用于用户向Docker提交命令请求
+* 2.1.2 Dokerd
+    * 守护进程, Docker Deamon. 在现代Dockerd中的主要包含的功能有: 镜像构建, 镜像管理, REST API, 核心网络及编排等. 并通过gRPC与Containerd进行通信
+* 2.1.3 Containerd
+    * Container Deamon, 该项目的主要功能是管理容器的生命周期. 其本身并不会创建容器, 而是调用Runc来完成容器的创建
+* 2.1.4 Runc
+    * Run Container, 是OCI容器运行时规范的实现, Runc项目的目标之一就是与规范保持一致. 所以Runc所在层也称为OCI层. 这使得Docker Deamon中不用再包含任何容器运行时的代码, 简化了Docker Deamon.
+    * Runc只有一个作用 -> 创建容器, 其本质黑丝一个独立的容器运行时CLI工具. 其在fork出一个容器子进程后会启动该容器进程. 在启动完毕后Runc会自动退出.
+* 2.1.5 Shim
+    * Shim 是实现“Daemonless Container” 不可或缺的工具，使容器与 Docker Daemon 解耩， 使得 Docker Daemon 的维护与升级不会影响到远行中的容器. 
+    * 每次创建容器时，Containerd 会先fork 出 Shim 进程，再由 shim 进程fork 出 Runc进程。 当 Runc 自动退出之前，会先将新容器进程的父进程指定为相应的 Shim 进程
+    * 除了作为容器的父进程外，Shim 进程还具有两个重要功能：
+        *  保持所有 STDIN 与STDOUT 流的开启状态，从而使得当 Docker Daemon 重启时，容器不会因为 Pipe 的关闭而终止。
+        * 将容器的退出状态反馈给 Docker Daemon。
+    * ![image-20240714015545170](./assets/image-20240714015545170.png)
+* 
 
 
 
