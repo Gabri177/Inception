@@ -84,6 +84,33 @@
     * ![image-20240714015545170](./assets/image-20240714015545170.png)
 * 
 
+---
+
+# Command about images
+
+`docker rmi + image_id`  => delete images
+
+`docker rmi -f + image_id1 image_id2` => delete images with force
+
+`docker images` => get images info
+
+`docker rmi -f $(docker images -qa)` => delete all images
+
+`docker pull image_name` => pull certain image
+
+`docker search image_name` => search certain image
+
+`docker system df` => show the detail info of images include image_id, the volumn ocupied by certain images, etc.
+
+==What is **dangling image**?==
+		The image with that the name of the repo and the name of it's tag are all <none> was called 'Dangling image'.
+
+# Command about containers
+
+`docker run [ops] IMAGE [cmd] [arg...]` establash and run a container
+
+
+
 
 
 
