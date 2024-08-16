@@ -109,27 +109,104 @@
 
 `docker run [ops] IMAGE [cmd] [arg...]` establash and run a container
 
+* Common options
+    * `--name=new_container_name`  rename a container
+    * `-d` Run the container in the background and return to container ID, that is, start the daemon container (running in the background):
+    * `-i` ==Run the container in **interactive** mode, usually used with== `-t`
+    * `-t` ==Reassign a pseudo input **terminal** to the container, which is usually used together with== `-i`:
+    * `-P` Random port mapping
+    * `-p` Defined port mapping
 
+`docker ps [ops]` see all the started containers
 
+* Common options
+    * `-a` List all containers running in the current year + containers that have been run in history
+    * `-l` Shows recently created containers.
+    * `-n + num` Displays the most recently created containers.
+    * `-q` Silent mode, only the container number is displayed.
 
+`exit` it will exit and stop the container
 
+`ctrl + p + q` it will exit but ==does not stop the container==
 
+`docker start + container_id/container_name` start stoped container
 
+`docker restart + container_id/container_name` restart contariner
 
+`docker stop + container_id/container_name` stop container
 
+`docker kill + container_id/container_name` force stop container
 
+`docker rm + container_id` delete the stoped container
 
+`docker attach + container_id/container_name` re-enter the exited but not stoped container
 
+>  ==If there is not image, it can not establish container==
 
+`docker logs + container_id/container_name` view running log
 
+`docker top + container_id/container_name `view the list of processes running in a specified container
 
+`docker inspect + container_id/container_name` see details inside the container
 
+**Enter the running container and interact with the command line:**
 
+* `docker exec -it container_id/container_name /bin/bash`
 
+* `docker attach + container_id/container_name`
 
+    > Differences between the above two commands: 
+    >
+    > * Attach directly enters the terminal of the container startup command. It will not start a new process and exit with exit, which will cause the container to stop.
+    >
+    > * exec opens a new terminal in the container, and can start a new process and exit with exit without causing the container to stop.
+    >
+    > ==It is recommended that you use the **docker exec** command, because exiting the container terminal will not cause the container to stop.==
 
+**Copy files in the container to the host:**
 
+* `docker cp container_id/container_name:file_dir_container file_dir_host`
 
+**Import and export containers:**
+
+* `export` exports the contents of the container as a tar archive file [corresponding to the `import` command]
+    * `docker export + container_id > file_name.tar`
+* `import` creates a new file system from the contents of the tar package and imports it as a mirror [corresponding to` export`]
+    * `cat file_name.tar | docker import -image_user/iamge_name:image_version`
+
+---
+
+# Docker image
+
+It is a lightweight, executable independent software package that contains everything needed to run a certain software. We package the application and configuration dependencies to form a deliverable running environment (including code, runtime requirements libraries, environment variables, configuration files, etc.), **this packaged running environment is the image image file**.
+
+==Only through this image file can a Docker container instance be generated== **(It can be considered as an object generated with `new` en C++ , and the image can be considered as the `class` en C++)**
+
+## UnionFS
+
+Union file system (UnionFs) is a hierarchical, lightweight and high-performance file system. ==It supports modifications to the file system to be added layer by layer as a single commit==. At the same time, different directories can be mounted to the same file system. Under a virtual file system (unite several directories into a single virtual filesystem). The Union file system is the basis of Docker images. ==Images can be inherited through layering.== Based on the base image (without a parent image), various specific application images can be produced.
+![image-20240816020132938](./assets/image-20240816020132938.png)
+
+> Docker image layers are read-only and container layers are writable. When the container starts, a new writable layer is loaded on top of the image. This layer is usually called the "container layer", and everything below the "container layer" is called the "mirror layer"
+
+> ==One of the biggest benefits of image layering is shared resources, which facilitates copying and migration for reuse.==
+
+`docker commit` Commit a copy of the container to become a new image
+
+`docker commit -m "" -a "auther" container_id/container_name aimed_image_user/aimed_image_name:tag_name`
+
+> **Example of creating a new image of ubuntu with vim:** 2 ways (docker commit; dockerfile)
+>
+> ```docker
+> docker pull ubuntu
+> docker run -it --name=vim_ubuntu ubuntu /bin/bash
+> 
+> apt-get update
+> apt-get install vim -y
+> exit
+> docker commit -m "ubuntu with vim" -a="yugao" ubuntu1 yugao/vim_ubuntu:1.0
+> docker images
+> ```
 
 
 
