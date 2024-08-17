@@ -298,6 +298,62 @@ A volume is a directory or file that exists in one or more containers and is mou
 
 `docker run -it --privileged=true --volumens-from volume_father --name=new_container_name image_name/image_id`
 
+## Dockerfile
+
+**Dockerfile** is a text file used to build a `Docker image`. It is a script composed of instructions and parameters required to build the image.
+
+`docker build`	
+
+ `docker run`
+
+RULES:
+
+1. Each reserved word instruction must be in uppercase letters and followed by at least one argument.
+2. Instructions are executed sequentially from top to bottom.
+3. `#` represents comments
+4. **Each command will create a new image layer and submit the image**
+
+The process of Docker executing Dockerfile:
+
+1. Docker runs a container from a base image
+2. Execute an instruction and make changes to the container
+3. Perform an operation similar to docker commit to submit a new image layer
+4. Docker then runs a new container based on the image just submitted.
+5. Execute the next instruction in the dockerfile until all instructions are executed
+
+![image-20240817175530279](./assets/image-20240817175530279.png)
+
+`FROM` basic_image
+
+`MAINTAINER `The name and email address of the image maintainer
+
+`RUN`
+
+* `RUN <bash comand>`
+* `RUN ["exec_file", "arg2", "arg1"]`
+
+`EXPOSE` Expose port of current container
+
+`WOARDIR` Specify the working directory where the terminal will log in by default after the container is created.
+
+`USER` Specify what kind of user the image will be executed as. If neither is specified, the default is root.
+
+`ENV` environment variable
+
+`ADD` Copy the files in the host directory into the image and automatically process the URL and decompress the tar archive.
+
+`COPY` Similar to ADD, copies files and directories to the image.
+
+`VOLUME` container volume
+
+`CMD`
+
+`ENTRYPOINT` Similar to the CMD instruction, but ENTRYPOINT will not be overwritten by the command after docker run, and these command line parameters will be used as parameters to the program specified by the ENTRYPOINT instruction.
+
+![image-20240817181048358](./assets/image-20240817181048358.png)
+
+![image-20240817181348984](./assets/image-20240817181348984.png)
+
 
 
 
