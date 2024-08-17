@@ -268,13 +268,53 @@ Union file system (UnionFs) is a hierarchical, lightweight and high-performance 
 
 ## 6. Container data volume
 
+### 6.1 Volume creation
+
 * `--privileged=true`
 
     > Docker mounts host directory access if cannot open directory appears. : Permission denied Solution: Add an additional `--privileged=true` parameter after mounting the directory
 
-> Mounting directories are prohibited in SELinux. If you want to enable it, we generally use the `-privileged=true command` to expand the permissions of the container to solve the problem of no permissions on the mounting directory, that is, use this parameter. The root phase within the container has ==real root permissions==. Otherwise, the root within the container is just an ==ordinary user outside the container==.
+Mounting directories are prohibited in SELinux. If you want to enable it, we generally use the `-privileged=true command` to expand the permissions of the container to solve the problem of no permissions on the mounting directory, that is, use this parameter. The root phase within the container has ==real root permissions==. Otherwise, the root within the container is just an ==ordinary user outside the container==.
 
 * `docker run -d -p 5000:5000 -v /zzyyuse/myregistry/:/tmp/registry --privileged=true registry`
 
     > By default, the warehouse is created in the `/var/lib/registry` directory of the container. It is recommended to use container volume mapping to facilitate joint debugging with the host.
+
+A volume is a directory or file that exists in one or more containers and is mounted to the container by docker, but does not belong to the Union File System, so it can bypass some features provided by the Union File System for persistent storage or sharing of data:
+**The design purpose of volumes is data persistence**, which is completely **independent** of the life cycle of the container. Therefore, Docker will not delete its mounted data volume when the container is deleted.
+
+`docker run -it --privileged=true -v /host_absolute_direction:/container_absolute_direction  image_name` Mount directory (Default rule: bidirectional reading and writing. It is the same as writing this way: `docker run -it --privileged=true -v /host_absolute_direction:/container_absolute_direction:rw image_name`)
+
+`docker run -it --privileged=true -v /host_absolute_direction:/container_absolute_direction:ro image_name` The container instance is internally restricted and can only read but not write. (ro: read only file system)
+
+1. Data volumes can share or reuse data between containers
+2. Changes in volumes can take effect directly in real time
+3. Changes in the data volume will not be included in updates to the mirror
+4. The life cycle of a data volume lasts until no containers use it.
+
+`docker inspect container_id/container_name` Check the Mounts field to check whether the directory is successfully mounted.
+
+### 6.2 Volume inheritance
+
+`docker run -it --privileged=true --volumens-from volume_father --name=new_container_name image_name/image_id`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
