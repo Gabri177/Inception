@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     unzip \
+    mariadb-client \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -25,7 +26,7 @@ RUN wget https://wordpress.org/latest.zip \
 
 RUN chown -R www-data:www-data /var/www/html
 
-COPY conf/wp-config.php /var/www/html/wp-config.php
+COPY ./conf/wp-config.php /var/www/html/wp-config.php
 
 RUN sed -i 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
 

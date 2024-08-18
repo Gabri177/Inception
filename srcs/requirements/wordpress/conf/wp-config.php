@@ -79,7 +79,9 @@ $table_prefix = 'wp_';
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-define( 'WP_DEBUG', false );
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true ); // 将错误记录到 wp-content/debug.log 文件中
+define( 'WP_DEBUG_DISPLAY', false ); // 禁止将错误直接显示在页面上
 
 /* Add any custom values between this line and the "stop editing" line. */
 

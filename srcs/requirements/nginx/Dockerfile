@@ -13,6 +13,8 @@ COPY ./conf/default /etc/nginx/conf.d/default.conf
 
 RUN mkdir -p /run/nginx
 
+RUN chown -R www-data:www-data /etc/nginx /var/log/nginx /run/nginx
+
 EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]
