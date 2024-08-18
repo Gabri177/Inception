@@ -368,6 +368,12 @@ The process of Docker executing Dockerfile:
 
 `docker network inspect net_name`
 
+## Docker compose
+
+Docker-compose is Docker's official open source project, responsible for realizing the rapid orchestration of Docker container clusters.
+
+`docker-compose up` start service
+
 
 
 
