@@ -354,6 +354,22 @@ The process of Docker executing Dockerfile:
 
 ![image-20240817181348984](./assets/image-20240817181348984.png)
 
+`docker build -t new_image_name:tag direction`
+
+## Docker network
+
+`docker network --help`
+
+`docker network ls`
+
+`docker network create new_net_name`
+
+`docker network rm net_name`
+
+`docker network inspect net_name`
+
+
+
 
 
 
