@@ -8,7 +8,7 @@ ARG MYSQL_PASSWORD
 RUN apt update -y && apt install -y \
 	mariadb-server
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+# COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld /var/lib/mysql
 RUN chmod 777 /var/run/mysqld
