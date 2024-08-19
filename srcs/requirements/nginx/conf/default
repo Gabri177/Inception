@@ -23,36 +23,37 @@ server {
 
 
 	server_name         yugao;
+
 	ssl_certificate     /etc/nginx/ssl/yugao.crt;
 	ssl_certificate_key /etc/nginx/ssl/yugao.key;
 	ssl_protocols       TLSv1.2 TLSv1.3;
 
-	index		    index.html index.php;
+	index		    index.php;
 	autoindex		on;
 
 	root		    /var/www/html;
 
 	location / {
 
-		try_files $uri $uri/ $uri/index.php /index.php$args;
+		try_files $uri $uri/ $uri/ /index.php$is_args$args;
 	}
 	
-	location ~ \.php$ {
-        
-		# include snippets/fastcgi-php.conf;
-		fastcgi_split_path_info ^(.+\.php)(/.+)$;
-		fastcgi_pass wordpress:9000;
-		fastcgi_index index.php;
-		include fastcgi_params;
-		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-		fastcgi_param SCRIPT_NAME $fastcgi_script_name;
-	        
+	location ~ [^/]\.php(/|$) { 
+
+        try_files $uri = 404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass wordpress:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+	location ~ /\.ht {
+
+		deny all;
 	}
-
-    	location ~ /\.ht {
-
-        	deny all;
-    	}
 }
 
 #server {
