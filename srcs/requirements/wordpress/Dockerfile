@@ -28,9 +28,17 @@ RUN chown -R www-data:www-data /var/www/html
 
 COPY ./conf/wp-config.php /var/www/html/wp-config.php
 
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
 RUN sed -i 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
+
+COPY ./tools/start.sh /usr/local/bin/start.sh
+
+RUN chmod +x /usr/local/bin/start.sh
 
 EXPOSE 9000
 
-CMD ["php-fpm7.3", "--nodaemonize"]
+CMD ["bash", "/usr/local/bin/start.sh"]
 

@@ -2,17 +2,28 @@ FROM debian:buster
 
 RUN apt-get update && apt-get install -y \
 
-	mariadb-server \
-	mariadb-client \
-	&& rm -rf /var/lib/apt/lists/*
+	mariadb-server && \
+	rm -rf /var/lib/apt/lists/*
 
-# RUN sed -i 's/^bind-address\s*=.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld /var/lib/mysql
 
-COPY ./tools/init.sql /docker-entrypoint-initdb.d/
+#COPY ./conf/init.sql .
+
+#RUN sed -i "s/NAME/${MYSQL_DATABASE}/g" ./init.sql && \
+#    sed -i "s/USER/${MYSQL_USER}/g" ./init.sql && \
+#    sed -i "s/PASSWD/${MYSQL_PASSWORD}/g" ./init.sql && \
+#    sed -i "s/ROOTPW/${MYSQL_ROOT_PASSWORD}/g" ./init.sql
+
+COPY ./tools/start.sh .
+
+RUN  chmod +x ./start.sh
+#RUN service mysql start && mysql < ./init.sql
 
 EXPOSE 3306
+
+ENTRYPOINT ["bash", "start.sh"]
 
 # VOLUME ["/var/lib/mysql"]
 
