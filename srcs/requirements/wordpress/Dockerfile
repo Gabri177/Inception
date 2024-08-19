@@ -11,16 +11,8 @@ ARG WP_USER
 ARG WP_USER_EMAIL
 ARG WP_USER_PASSWORD
 
-RUN apt-get update && apt-get install -y \
-    php \
-    php-fpm \
-    php-mysql \
-    curl \
-    wget \
-    unzip \
-    mariadb-client \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update -y
+RUN apt install php7.3 php-mysqli php-fpm mariadb-client curl -y
 
 RUN mkdir -p /run/php \
     && chown -R www-data:www-data /run/php
