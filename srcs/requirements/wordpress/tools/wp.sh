@@ -28,7 +28,7 @@ if wp user get $WP_USER --field=ID --allow-root > /dev/null 2>&1; then
     wp user update $WP_USER --user_pass=$WP_USER_PASSWORD --allow-root
 else
     echo "Creating new user $WP_USER..."
-    wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PASSWORD --allow-root
+    wp user create $WP_USER example@example.com --role=author --user_pass=$WP_USER_PASSWORD --allow-root
 fi
 
 /usr/sbin/php-fpm7.3 -F -R
