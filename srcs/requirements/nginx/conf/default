@@ -28,7 +28,7 @@ server {
 	ssl_protocols       TLSv1.2 TLSv1.3;
 
 	index		    index.html index.php;
-	autoindex		on
+	autoindex		on;
 
 	root		    /var/www/html;
 
