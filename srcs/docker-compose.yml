@@ -1,11 +1,22 @@
 version: "3.8"
 
 networks: 
-  yugao: 
+  net_inception: 
+    driver: bridge
 
 volumes:
-  wordpress:
-  mariadb:
+  v_mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/yugao/data/mariadb
+  v_wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/yugao/data/wordpress
 
 services:
   nginx:
@@ -14,15 +25,11 @@ services:
     depends_on:     
       - wordpress
     ports:
-      - "443:443"
+      - 443:443
     volumes:
-      - type: volume
-        source: wordpress
-        target:  /var/www/html
+      - v_wordpress:/var/www/html
     networks:
-      - yugao
-    env_file:
-      - .env
+      - net_inception
     restart:  always
   wordpress:
     container_name: wordpress
@@ -30,23 +37,24 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - type: volume
-        source: wordpress
-        target:  /var/www/html
+      - v_wordpress:/var/www/html
     networks:
-      - yugao
+      - net_inception
     env_file:
       - .env
     restart:  always
   mariadb:
     container_name: mariadb
-    build:          ./requirements/mariadb
+    build:
+      context: ./requirements/mariadb
+      args:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - type: volume
-        source: mariadb
-        target:  /var/lib/mysql
+      - v_mariadb:/var/lib/mysql
     networks:
-      - yugao
+      - net_inception
     env_file:
       - .env
     restart:  always

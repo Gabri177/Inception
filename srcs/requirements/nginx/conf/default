@@ -22,25 +22,25 @@ server {
 	listen 		    [::]:443 ssl;
 
 
-    	server_name         yugao.com;
-    	ssl_certificate     /etc/nginx/ssl/yugao.crt;
-    	ssl_certificate_key /etc/nginx/ssl/yugao.key;
-    	ssl_protocols       TLSv1.2 TLSv1.3;
+	server_name         yugao;
+	ssl_certificate     /etc/nginx/ssl/yugao.crt;
+	ssl_certificate_key /etc/nginx/ssl/yugao.key;
+	ssl_protocols       TLSv1.2 TLSv1.3;
 
 	index		    index.html index.php;
+	autoindex		on
 
 	root		    /var/www/html;
 
 	location / {
 
-		autoindex on;
 		try_files $uri $uri/ $uri/index.php /index.php$args;
 	}
 	
 	location ~ \.php$ {
         
 		# include snippets/fastcgi-php.conf;
-	        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		fastcgi_pass wordpress:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
