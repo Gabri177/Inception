@@ -1,6 +1,5 @@
 # Docker for beginner
 
-IMPORTANT : ==If you just want to get the necessary Docker knowledge you need to complete this project, please skip the first two chapters.==
 
 ## 1 Docker 概述
 
