@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y nginx openssl
 RUN mkdir /etc/nginx/ssl
 
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-    -out /etc/nginx/ssl/yugao.crt \
-    -keyout /etc/nginx/ssl/yugao.key \
+    -out /etc/nginx/ssl/yugao.42.fr.crt \
+    -keyout /etc/nginx/ssl/yugao.42.fr.key \
     -subj "/C=ES/ST=Madrid/L=Madrid/O=42 Madrid/CN=yugao.42.fr"
 
 COPY ./conf/default /etc/nginx/conf.d/default.conf
