@@ -22,7 +22,7 @@ server {
 	listen 		    [::]:443 ssl;
 
 
-	server_name         yugao;
+	server_name         yugao.42.fr;
 
 	ssl_certificate     /etc/nginx/ssl/yugao.crt;
 	ssl_certificate_key /etc/nginx/ssl/yugao.key;
