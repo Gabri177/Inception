@@ -15,6 +15,10 @@ restart: down up
 clean:
 	$(DOCKER_COMPOSE) down --rmi all --volumes --remove-orphans
 
+fclean: clean
+	@rm -rf /home/yugao/data/mariadb/*
+	@rm -rf /home/yugao/data/wordpress/*
+
 re: clean all
 
-.PHONY: all up down restart clean re
+.PHONY: all up down restart clean re fclean
