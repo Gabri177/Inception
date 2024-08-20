@@ -11,7 +11,7 @@ wp config create --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_P
 if wp core is-installed --allow-root; then
     echo "WordPress is already installed, updating configuration..."
 else
-    wp core install --url=https://yugao --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --allow-root
+    wp core install --url=https://yugao.42.fr --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --allow-root
 fi
 
 if wp user get $WP_ADMIN_USER --field=ID --allow-root > /dev/null 2>&1; then
