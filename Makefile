@@ -1,4 +1,4 @@
-DOCKER_COMPOSE = docker-compose -f srcs/docker-compose.yml
+DOCKER_COMPOSE = docker compose -f srcs/docker-compose.yml
 
 all: up
 	@if [ ! -d /home/yugao/data/mariadb ]; then mkdir -p /home/yugao/data/mariadb; fi
@@ -14,10 +14,6 @@ restart: down up
 
 clean:
 	$(DOCKER_COMPOSE) down --rmi all --volumes --remove-orphans
-
-fclean: clean
-	@rm -rf /home/yugao/data/mariadb/*
-	@rm -rf /home/yugao/data/wordpress/*
 
 re: clean all
 
